@@ -19,6 +19,7 @@
     <None Include="Stampante.ino" />
     <None Include="Comunicazione.ino" />
     <None Include="Display.ino" />
+    <None Include="RTC.ino" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="__vm\.Cassa.vsarduino.h">

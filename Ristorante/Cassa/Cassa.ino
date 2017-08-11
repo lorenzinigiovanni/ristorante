@@ -7,17 +7,23 @@
 #include <Wire.h>
 #include <Ethernet.h>
 
+//---------------------------RTC--------------------------------------------------
+
+tmElements_t time;
+
+const char *monthName[12] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+
 //---------------------------definizione-pin--------------------------------------
 
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
-int buttonPin[20] = { 22, 24, 26, 28, 30, 32, 34, 36, 38, 23, 25, 27, 29, 31, 33, 35, 37, 39, 40, 41 };
+const int buttonPin[20] = { 22, 24, 26, 28, 30, 32, 34, 36, 38, 23, 25, 27, 29, 31, 33, 35, 37, 39, 40, 41 };
 
-int openDrawer = 43;
+const int openDrawer = 43;
 
 //---------------------------variabili-comunicazione-udp--------------------------
 
-int cashRegisterNumber = 0;
+const int cashRegisterNumber = 0;
 
 byte mac[] = { 0x00, 0xAA, 0xBB, 0xCC, 0xDE, 0x02 };
 IPAddress ip(192, 168, 1, 200 + cashRegisterNumber);
@@ -92,8 +98,13 @@ String heading = "LORENZINI GIOVANNI";
 String footer = "BUON APPETITO!";
 
 
-void setup()
-{
+void setup() {
+	//---------------------------setup-RTC--------------------------------------------
+
+	if (getDate(__DATE__) && getTime(__TIME__)) {
+		RTC.write(time);
+	}
+	
 	//---------------------------setup-comunicazione----------------------------------
 
 	Ethernet.begin(mac, ip);
@@ -165,8 +176,7 @@ void setup()
 }
 
 
-void loop()
-{
+void loop() {
 	//---------------------------pulsanti-pasti---------------------------------------
 
 	for (int i = 0; i < 18; i++)
@@ -191,6 +201,7 @@ void loop()
 			lcd.setCursor(0, 1);
 			lcd.print("Conto Resettato ");
 		}
+
 		delay(200);
 		while (!digitalRead(buttonPin[18])) {}
 		delay(200);

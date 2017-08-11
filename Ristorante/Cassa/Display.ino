@@ -16,24 +16,29 @@ void lcd_progress_bar(int row, int var, int minVal, int maxVal) {
 	byte bar3[8] = { 0x1C, 0x1C, 0x1C, 0x1C, 0x1C, 0x1C, 0x1C, 0x1C };
 	byte bar4[8] = { 0x1E, 0x1E, 0x1E, 0x1E, 0x1E, 0x1E, 0x1E, 0x1E };
 	byte bar5[8] = { 0x1F, 0x1F, 0x1F, 0x1F, 0x1F, 0x1F, 0x1F, 0x1F };
+
 	lcd.createChar(1, bar1);
 	lcd.createChar(2, bar2);
 	lcd.createChar(3, bar3);
 	lcd.createChar(4, bar4);
 	lcd.createChar(5, bar5);
 
-	for (int x = 0; x < block; x++)
-	{
+	for (int x = 0; x < block; x++)	{
 		lcd.setCursor(x, row);
 		lcd.write(1023);
 	}
 
 	lcd.setCursor(block, row);
-	if (bar != 0) lcd.write(bar);
-	if (block == 0 && line == 0) lcd.write(1022);
 
-	for (int x = 16; x > block; x--)
-	{
+	if (bar != 0) {
+		lcd.write(bar);
+	}
+
+	if (block == 0 && line == 0) {
+		lcd.write(1022);
+	}
+
+	for (int x = 16; x > block; x--) {
 		lcd.setCursor(x, row);
 		lcd.write(1022);
 	}

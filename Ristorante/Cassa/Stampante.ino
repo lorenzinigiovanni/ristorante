@@ -1,6 +1,4 @@
 void print() {
-	tmElements_t actualTime;
-
 	Serial1.write(27);				// testo centrato
 	Serial1.write(97);
 	Serial1.write(49);
@@ -30,6 +28,7 @@ void print() {
 			Serial1.print(platesNumber[i]);
 			Serial1.write(" ");
 			Serial1.print(printerPlateDescription[i]);
+
 			Serial1.write(27);		// posizione testo personalizzata
 			Serial1.write(36);
 			Serial1.write(55);
@@ -68,19 +67,19 @@ void print() {
 	Serial1.write(97);
 	Serial1.write(49);
 
-	if (RTC.read(actualTime)) {
+	if (RTC.read(time)) {
 		Serial1.write(10);
-		printDigits(actualTime.Day);
+		printDigits(time.Day);
 		Serial1.print("/");
-		printDigits(actualTime.Month);
+		printDigits(time.Month);
 		Serial1.print("/");
-		printDigits(tmYearToCalendar(actualTime.Year));
+		printDigits(tmYearToCalendar(time.Year));
 		Serial1.print("             ");
-		printDigits(actualTime.Hour);
+		printDigits(time.Hour);
 		Serial1.print(":");
-		printDigits(actualTime.Minute);
+		printDigits(time.Minute);
 		Serial1.print(":");
-		printDigits(actualTime.Second);
+		printDigits(time.Second);
 	}
 
 	Serial1.print("\n\n");
@@ -101,15 +100,19 @@ void printBarcode(int n) {
 
 	char barCode[12];
 
-	for (int i = 0; i < 12; i++)
+	for (int i = 0; i < 12; i++) {
 		barCode[i] = 47;			// riempo l'array di caratteri non numerici
+	}
 
 	itoa(n, barCode, 10);
 
 	int empty = 0;
-	for (int i = 0; i < 12; i++)
-		if (barCode[i] == 47)
+
+	for (int i = 0; i < 12; i++) {
+		if (barCode[i] == 47) {
 			empty += 1;				// calcolo il numero di caratteri non numerici
+		}
+	}
 
 	int m = 12 - empty;
 
@@ -121,13 +124,15 @@ void printBarcode(int n) {
 		Serial1.write(m);
 	}
 
-	for (int i = 0; i < m; i++)
+	for (int i = 0; i < m; i++) {
 		Serial1.write(barCode[i]);	// stampo solo i caratteri numerici
+	}
 }
 
 
 void printDigits(int digits) {
-	if (digits < 10)
+	if (digits < 10) {
 		Serial1.print('0');
+	}
 	Serial1.print(digits);
 }
