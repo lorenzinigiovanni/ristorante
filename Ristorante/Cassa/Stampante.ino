@@ -1,138 +1,46 @@
-void print() {
-	Serial1.write(27);				// testo centrato
-	Serial1.write(97);
-	Serial1.write(49);
+void printOrder() {
+	char buffer[50];
 
-	Serial1.write(29);				// dimensione testo grande
-	Serial1.write(33);
-	Serial1.write(83);
+	printer.justify('C');
+	printer.setSize('L');
+	printer.print("#");
+	printer.println(orderNumber);
 
-	Serial1.write("N");
-	Serial1.write(248);
-	Serial1.print(orderNumber);
-	Serial1.write(10);
+	printer.setSize('S');
+	printer.println(heading);
 
-	Serial1.write(29);				// dimensione testo normale
-	Serial1.write(33);
-	Serial1.write(byte(0));
+	printer.feed();
 
-	Serial1.print(heading);
-	Serial1.print("\n\n");
-
-	Serial1.write(27);				// testo a sinistra
-	Serial1.write(97);
-	Serial1.write(48);
+	printer.justify('L');
 
 	for (int i = 0; i < 18; i++) {
 		if (platesNumber[i] > 0) {
-			Serial1.print(platesNumber[i]);
-			Serial1.write(" ");
-			Serial1.print(printerPlateDescription[i]);
-
-			Serial1.write(27);		// posizione testo personalizzata
-			Serial1.write(36);
-			Serial1.write(55);
-			Serial1.write(1);
-			if (bill[i] < 100.0) {
-				Serial1.print(" ");
-			}
-			if (bill[i] < 10.0) {
-				Serial1.print(" ");
-			}
-			Serial1.print(bill[i]);
-			Serial1.write(10);
+			sprintf(buffer, "%-2d %-22.22s %3d.%02d", platesNumber[i], printerPlateDescription[i].c_str(), (int)bill[i], (int)(bill[i] * 100) % 100);
+			printer.println(buffer);
 		}
-		delay(50);
 	}
-	delay(50);
 
-	Serial1.print("\nTOTALE");
+	printer.feed();
 
-	Serial1.write(27);				// posizione testo personalizzata
-	Serial1.write(36);
-	Serial1.write(20);
-	Serial1.write(1);
-	Serial1.print(" ");
-	if (totalBill < 100.0) {
-		Serial1.print(" ");
-	}
-	if (totalBill < 10.0) {
-		Serial1.print(" ");
-	}
-	Serial1.write(213);				// simbolo €
-	Serial1.print(" ");
-	Serial1.print(totalBill);
-
-	Serial1.write(27);				// testo centrato
-	Serial1.write(97);
-	Serial1.write(49);
+	sprintf(buffer, "TOTALE %22d.%02d", (int)totalBill, (int)(totalBill * 100.0) % 100);
+	printer.println(buffer);
 
 	if (RTC.read(time)) {
-		Serial1.write(10);
-		printDigits(time.Day);
-		Serial1.print("/");
-		printDigits(time.Month);
-		Serial1.print("/");
-		printDigits(tmYearToCalendar(time.Year));
-		Serial1.print("             ");
-		printDigits(time.Hour);
-		Serial1.print(":");
-		printDigits(time.Minute);
-		Serial1.print(":");
-		printDigits(time.Second);
+		printer.feed();
+		sprintf(buffer, "%02d/%02d/%04d              %02d:%02d:%02d", time.Day, time.Month, tmYearToCalendar(time.Year), time.Hour, time.Minute, time.Second);
+		printer.println(buffer);
 	}
 
-	Serial1.print("\n\n");
+	printer.justify('C');
 
-	delay(500);
-	printBarcode(orderNumber);
-	delay(500);
+	sprintf(buffer, "%d", orderNumber);
+	printer.printBarcode(buffer, CODE128);
 
-	Serial1.print(footer);
-	Serial1.print("\n\nDeveloped by Lorenzini Giovanni\n\n\n");
-}
+	printer.println(footer);
 
+	printer.fontB();
+	printer.println("Developed by Lorenzini Giovanni");
+	printer.fontA();
 
-void printBarcode(int n) {
-	Serial1.write(29);
-	Serial1.write(107);
-	Serial1.write(73);
-
-	char barCode[12];
-
-	for (int i = 0; i < 12; i++) {
-		barCode[i] = 47;			// riempo l'array di caratteri non numerici
-	}
-
-	itoa(n, barCode, 10);
-
-	int empty = 0;
-
-	for (int i = 0; i < 12; i++) {
-		if (barCode[i] == 47) {
-			empty += 1;				// calcolo il numero di caratteri non numerici
-		}
-	}
-
-	int m = 12 - empty;
-
-	if (m < 2) {
-		Serial1.write(2);
-		Serial1.write(48);			// aggiungo uno zero (CODE128 minimo 2 caratteri)
-	}
-	else {
-		Serial1.write(m);
-	}
-
-	for (int i = 0; i < m; i++) {
-		Serial1.write(barCode[i]);	// stampo solo i caratteri numerici
-	}
-}
-
-
-void printDigits(int digits) {
-	if (digits < 10) {
-		Serial1.print('0');
-	}
-	Serial1.print(digits);
+	printer.feed(2);
 }

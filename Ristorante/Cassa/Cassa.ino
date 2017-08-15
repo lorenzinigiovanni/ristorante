@@ -6,6 +6,11 @@
 #include <LiquidCrystal_I2C.h>
 #include <Wire.h>
 #include <Ethernet.h>
+#include "ThermalPrinter.h"
+
+//---------------------------stampante--------------------------------------------
+
+ThermalPrinter printer(&Serial1, 4);
 
 //---------------------------RTC--------------------------------------------------
 
@@ -100,7 +105,7 @@ String footer = "BUON APPETITO!";
 
 void setup() {
 	//---------------------------setup-RTC--------------------------------------------
-
+	
 	if (getDate(__DATE__) && getTime(__TIME__)) {
 		RTC.write(time);
 	}
@@ -127,35 +132,21 @@ void setup() {
 		lcd_progress_bar(1, i, 0, 1000);
 		delay(10);
 	}
-
+	
 	//---------------------------setup-stampante--------------------------------------
 
-	Serial1.begin(19600);			// inizializzazione seriale stampante
+	Serial1.begin(19600);
 
-	Serial1.write(27);				// initialize the printer
-	Serial1.write(64);
+	printer.begin();
+	printer.setDefault();
 
-	Serial1.write(27);
-	Serial1.write(55);
-	Serial1.write(7);				// max printing dots
-	Serial1.write(80);				// heating time
-	Serial1.write(2);				// heating interval
+	printer.setCharset(CHARSET_ITALY);
+	printer.setCodePage(CODEPAGE_ISO_8859_15);
 
-	Serial1.write(18);				// printing density
-	Serial1.write(35);
-	Serial1.write(255);
+	printer.setBarcodeHeight(50);
+	printer.setBarcodeWidht(4);
 
-	Serial1.write(27);				// tabella estesa europa
-	Serial1.write(116);
-	Serial1.write(19);
-
-	Serial1.write(29);				// altezza codice a barre
-	Serial1.write(104);
-	Serial1.write(50);
-
-	Serial1.write(29);				// larghezza codice a barre
-	Serial1.write(119);
-	Serial1.write(4);
+	printOrder();
 
 	//---------------------------sincronizzazione-con-PC------------------------------
 
@@ -213,21 +204,54 @@ void loop() {
 		if (totalPlatesNumber > 0) {
 			digitalWrite(openDrawer, HIGH);
 
-			sender();
+			sendOrder();
 
-			for (int i = 0; i < 18; i++) {
-				bill[i] = platesNumber[i] * plateCost[i];
-				totalBill += bill[i];
+			if (orderNumber == 0) {
+				lcd.setCursor(0, 0);
+				lcd.print("     Ordine     ");
+				lcd.setCursor(0, 1);
+				lcd.print("   non Valido   ");
+				delay(1000);
 			}
+			else {
+				for (int i = 0; i < 18; i++) {
+					bill[i] = platesNumber[i] * plateCost[i];
+					totalBill += bill[i];
+				}
 
-			lcd.setCursor(0, 0);
-			lcd.print("     Totale     ");
-			lcd.setCursor(5, 1);
-			lcd.print(totalBill);
+				lcd.setCursor(0, 0);
+				lcd.print("     Totale     ");
+				lcd.setCursor(5, 1);
+				lcd.print(totalBill);
 
-			print();
+				if (!printer.hasPaper()) {
+					lcd.setCursor(0, 0);
+					lcd.print(" Inserire Carta ");
 
-			reset();
+					while (!printer.hasPaper()) {
+						delay(1);
+					}
+
+					delay(2000);
+				}
+
+				printOrder();
+
+				if (!printer.hasPaper()) {
+					lcd.setCursor(0, 0);
+					lcd.print(" Inserire Carta ");
+
+					while (!printer.hasPaper()) {
+						delay(1);
+					}
+
+					delay(2000);
+
+					printOrder();
+				}
+
+				reset();
+			}
 
 			lcd.setCursor(0, 1);
 			lcd.print("Pronto per Nuovo");

@@ -1,4 +1,4 @@
-void sender() {
+void sendOrder() {
 	lcd.setCursor(0, 0);
 	lcd.print("  Invio ordine  ");
 	lcd.setCursor(0, 1);
