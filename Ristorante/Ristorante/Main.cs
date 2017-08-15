@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Ristorante.Properties;
+using System.Linq;
 
 namespace Ristorante
 {
@@ -187,7 +188,7 @@ namespace Ristorante
         /// <summary>
         /// Event handler for a new order
         /// </summary>
-        /// <param name="sender">Senser object</param>
+        /// <param name="sender">Sender object</param>
         /// <param name="e">Order Event Args</param>
         public async void NewOrder(object sender, OrderEventArgs e)
         {
@@ -220,22 +221,36 @@ namespace Ristorante
                         }
                         _remainingPlates[i] -= result[i];
                     }
-
-                    _ordersToDo[i] += result[i];
+                    
                     response += result[i] + ",";
                 }
 
-                var orderNumber = await _database.GetLastOrderNumberAsync() + 1;
+                bool allZero = result.All(x => x == 0);
 
-                response += orderNumber + ",";
-                e.Response = response;
+                if (allZero)
+                {
+                    response += "0,";
+                    e.Response = response;
+                }
+                else
+                {
+                    for (var i = 0; i < 18; i++)
+                    {
+                        _ordersToDo[i] += result[i];
+                    }
 
-                await _database.AddOrderAsync(result, orderNumber);
+                    var orderNumber = await _database.GetLastOrderNumberAsync() + 1;
 
-                _remainingOrders++;
+                    response += orderNumber + ",";
+                    e.Response = response;
 
-                RefreshOrdersToDo();
-                RefreshRemainingPlates();
+                    await _database.AddOrderAsync(result, orderNumber);
+
+                    _remainingOrders++;
+
+                    RefreshOrdersToDo();
+                    RefreshRemainingPlates();
+                }
             }
             catch (Exception ex)
             {
