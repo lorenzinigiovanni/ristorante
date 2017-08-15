@@ -59,6 +59,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.printerComboBox = new System.Windows.Forms.ComboBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.info.SuspendLayout();
@@ -129,7 +130,7 @@
             this.info.Location = new System.Drawing.Point(4, 44);
             this.info.Name = "info";
             this.info.Padding = new System.Windows.Forms.Padding(3);
-            this.info.Size = new System.Drawing.Size(482, 171);
+            this.info.Size = new System.Drawing.Size(481, 171);
             this.info.TabIndex = 3;
             this.info.Text = "Informazioni";
             this.info.UseVisualStyleBackColor = true;
@@ -138,13 +139,13 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(6, 80);
+            this.label6.Location = new System.Drawing.Point(6, 54);
             this.label6.MaximumSize = new System.Drawing.Size(300, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(277, 64);
+            this.label6.Size = new System.Drawing.Size(174, 112);
             this.label6.TabIndex = 13;
-            this.label6.Text = "Per informazioni contattare Giovanni Lorenzini\r\n\r\ngioam.lorenzini@gmail.com\r\n334 " +
-    "7648426";
+            this.label6.Text = "Modificare il database con:\r\nDB Browser for SQLite\r\n\r\nPer informazioni contattare" +
+    ":\r\nGiovanni Lorenzini\r\ngioam.lorenzini@gmail.com\r\n334 7648426";
             // 
             // pictureBox2
             // 
@@ -216,7 +217,7 @@
             0});
             this.cashRegistersNumber.Name = "cashRegistersNumber";
             this.cashRegistersNumber.Size = new System.Drawing.Size(237, 20);
-            this.cashRegistersNumber.TabIndex = 23;
+            this.cashRegistersNumber.TabIndex = 7;
             this.cashRegistersNumber.Value = new decimal(new int[] {
             1,
             0,
@@ -241,7 +242,7 @@
             this.cursorChk.Location = new System.Drawing.Point(86, 24);
             this.cursorChk.Name = "cursorChk";
             this.cursorChk.Size = new System.Drawing.Size(120, 17);
-            this.cursorChk.TabIndex = 23;
+            this.cursorChk.TabIndex = 6;
             this.cursorChk.Text = "Nascondi Puntatore";
             this.cursorChk.UseVisualStyleBackColor = true;
             this.cursorChk.CheckedChanged += new System.EventHandler(this.curChk_CheckedChanged);
@@ -252,7 +253,7 @@
             this.fullscreenChk.Location = new System.Drawing.Point(6, 24);
             this.fullscreenChk.Name = "fullscreenChk";
             this.fullscreenChk.Size = new System.Drawing.Size(74, 17);
-            this.fullscreenChk.TabIndex = 22;
+            this.fullscreenChk.TabIndex = 5;
             this.fullscreenChk.Text = "Fullscreen";
             this.fullscreenChk.UseVisualStyleBackColor = true;
             this.fullscreenChk.CheckedChanged += new System.EventHandler(this.fullscreenChk_CheckedChanged);
@@ -275,7 +276,7 @@
             this.connectDB.Location = new System.Drawing.Point(157, 25);
             this.connectDB.Name = "connectDB";
             this.connectDB.Size = new System.Drawing.Size(145, 23);
-            this.connectDB.TabIndex = 22;
+            this.connectDB.TabIndex = 3;
             this.connectDB.Text = "Connect DB";
             this.connectDB.UseVisualStyleBackColor = true;
             this.connectDB.Click += new System.EventHandler(this.connectDB_Click);
@@ -285,7 +286,7 @@
             this.selectDB.Location = new System.Drawing.Point(6, 25);
             this.selectDB.Name = "selectDB";
             this.selectDB.Size = new System.Drawing.Size(145, 23);
-            this.selectDB.TabIndex = 18;
+            this.selectDB.TabIndex = 2;
             this.selectDB.Text = "Select DB";
             this.selectDB.UseVisualStyleBackColor = true;
             this.selectDB.Click += new System.EventHandler(this.selectDB_Click);
@@ -296,7 +297,7 @@
             this.resetDB.Location = new System.Drawing.Point(308, 25);
             this.resetDB.Name = "resetDB";
             this.resetDB.Size = new System.Drawing.Size(145, 23);
-            this.resetDB.TabIndex = 20;
+            this.resetDB.TabIndex = 4;
             this.resetDB.Text = "Reset DB";
             this.resetDB.UseVisualStyleBackColor = true;
             this.resetDB.Click += new System.EventHandler(this.resetDB_Click);
@@ -326,29 +327,30 @@
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(489, 219);
             this.tabControl1.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
-            this.tabControl1.TabIndex = 12;
+            this.tabControl1.TabIndex = 1;
             // 
             // advancedSettings
             // 
             this.advancedSettings.Controls.Add(this.groupBox3);
             this.advancedSettings.Location = new System.Drawing.Point(4, 44);
             this.advancedSettings.Name = "advancedSettings";
-            this.advancedSettings.Size = new System.Drawing.Size(482, 171);
+            this.advancedSettings.Size = new System.Drawing.Size(481, 171);
             this.advancedSettings.TabIndex = 4;
             this.advancedSettings.Text = "Avanzate";
             this.advancedSettings.UseVisualStyleBackColor = true;
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.label8);
             this.groupBox3.Controls.Add(this.label7);
             this.groupBox3.Controls.Add(this.printerFooter);
             this.groupBox3.Controls.Add(this.printerHeading);
             this.groupBox3.Controls.Add(this.label4);
             this.groupBox3.Controls.Add(this.label3);
             this.groupBox3.Controls.Add(this.printerComboBox);
-            this.groupBox3.Location = new System.Drawing.Point(9, 8);
+            this.groupBox3.Location = new System.Drawing.Point(9, 6);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(464, 155);
+            this.groupBox3.Size = new System.Drawing.Size(464, 157);
             this.groupBox3.TabIndex = 0;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Stampante";
@@ -356,7 +358,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(6, 31);
+            this.label7.Location = new System.Drawing.Point(6, 52);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(89, 13);
             this.label7.TabIndex = 5;
@@ -364,7 +366,7 @@
             // 
             // printerFooter
             // 
-            this.printerFooter.Location = new System.Drawing.Point(116, 97);
+            this.printerFooter.Location = new System.Drawing.Point(116, 121);
             this.printerFooter.Name = "printerFooter";
             this.printerFooter.Size = new System.Drawing.Size(342, 20);
             this.printerFooter.TabIndex = 4;
@@ -372,7 +374,7 @@
             // 
             // printerHeading
             // 
-            this.printerHeading.Location = new System.Drawing.Point(116, 71);
+            this.printerHeading.Location = new System.Drawing.Point(116, 95);
             this.printerHeading.Name = "printerHeading";
             this.printerHeading.Size = new System.Drawing.Size(342, 20);
             this.printerHeading.TabIndex = 3;
@@ -381,7 +383,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 101);
+            this.label4.Location = new System.Drawing.Point(6, 124);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(69, 13);
             this.label4.TabIndex = 2;
@@ -390,7 +392,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 75);
+            this.label3.Location = new System.Drawing.Point(6, 98);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(64, 13);
             this.label3.TabIndex = 1;
@@ -399,11 +401,20 @@
             // printerComboBox
             // 
             this.printerComboBox.FormattingEnabled = true;
-            this.printerComboBox.Location = new System.Drawing.Point(116, 28);
+            this.printerComboBox.Location = new System.Drawing.Point(116, 49);
             this.printerComboBox.Name = "printerComboBox";
             this.printerComboBox.Size = new System.Drawing.Size(342, 21);
-            this.printerComboBox.TabIndex = 0;
+            this.printerComboBox.TabIndex = 2;
             this.printerComboBox.SelectedIndexChanged += new System.EventHandler(this.printerComboBox_SelectedIndexChanged);
+            // 
+            // label8
+            // 
+            this.label8.Location = new System.Drawing.Point(113, 33);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(345, 13);
+            this.label8.TabIndex = 6;
+            this.label8.Text = "Lasciare il campo vuoto per disattivare la stampa";
+            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // Impostazioni
             // 
@@ -416,7 +427,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Impostazioni";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Impostazioni";
+            this.Text = "Ristorante";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Impostazioni_FormClosing);
             this.Load += new System.EventHandler(this.Impostazioni_Load);
             this.panel1.ResumeLayout(false);
@@ -471,5 +482,6 @@
         private System.Windows.Forms.TextBox printerHeading;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label8;
     }
 }

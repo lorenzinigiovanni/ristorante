@@ -41,6 +41,8 @@ namespace Ristorante
 
         private void Impostazioni_Load(object sender, EventArgs e)
         {
+            printerComboBox.Items.Add("");
+
             for (var i = 0; i < PrinterSettings.InstalledPrinters.Count; i++)
             {
                 var printer = PrinterSettings.InstalledPrinters[i];
