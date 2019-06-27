@@ -105,7 +105,7 @@ void ThermalPrinter::begin(uint8_t heatTime)
 	writeBytes(ASCII_FS, '.');
 
 	writeBytes(ASCII_ESC, '7');   // Esc 7 (print settings)
-	writeBytes(11, heatTime, 40); // Heating dots, heat time, heat interval
+	writeBytes(7, heatTime, 2); // Heating dots, heat time, heat interval
 
 #define printDensity   10 // 100%
 #define printBreakTime  2 // 500 uS
@@ -197,7 +197,7 @@ void ThermalPrinter::printBarcode(char * text, uint8_t type)
 
 // === Character commands ===
 
-#define	FONT_MASK		   (1 << 0)
+#define	FONT_MASK		       (1 << 0)
 #define INVERSE_MASK       (1 << 1)
 #define UPDOWN_MASK        (1 << 2)
 #define BOLD_MASK          (1 << 3)

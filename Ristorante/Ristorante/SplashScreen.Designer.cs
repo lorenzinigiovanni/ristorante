@@ -74,7 +74,7 @@
             this.ownersLbl.Name = "ownersLbl";
             this.ownersLbl.Size = new System.Drawing.Size(428, 17);
             this.ownersLbl.TabIndex = 3;
-            this.ownersLbl.Text = "Developed by Giovanni Lorenzini";
+            this.ownersLbl.Text = "Developed by Giovanni Lorenzini in collaboration with Massimiliano Montagni";
             this.ownersLbl.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // pictureBox1

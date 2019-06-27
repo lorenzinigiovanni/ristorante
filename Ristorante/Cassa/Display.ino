@@ -1,14 +1,44 @@
-void displayUpdate() {
-	lcd.setCursor(0, 0);
-	lcd.print("Piatto ");
-	lcd.print(totalPlatesNumber);
-	lcd.print("         ");
+void displayUpdate(int i) {
+	DisplayString buffer = { '\0' };
+	DisplayString mask = "Quantita %7d";
+
+	if (i == -2) {
+		lcd.setCursor(0, 0);
+		snprintf(buffer, sizeof(DisplayString), mask, 0);
+    buffer[sizeof(DisplayString) - 1] = '\0';
+		lcd.print(buffer);
+
+		lcd.setCursor(0, 1);
+		lcd.print(F("Pronto per Nuovo"));
+		
+	}
+	else if (i == -1) {
+		lcd.setCursor(0, 0);
+		snprintf(buffer, sizeof(DisplayString), mask, 0);
+    buffer[sizeof(DisplayString) - 1] = '\0';
+		lcd.print(buffer);
+
+		lcd.setCursor(0, 1);
+		lcd.print(F("Conto Resettato "));
+	}
+	else {
+		lcd.setCursor(0, 0);
+		snprintf(buffer, sizeof(DisplayString), mask, plates[i].quantity);
+    buffer[sizeof(DisplayString) - 1] = '\0';
+		lcd.print(buffer);
+
+		lcd.setCursor(0, 1);
+		snprintf(buffer, sizeof(DisplayString), "%-16s", plates[i].displayDescription);
+    buffer[sizeof(DisplayString) - 1] = '\0';
+		lcd.print(buffer);
+	}
 }
 
+//////////////////////////////////////////////////////////////////////////////////////
 
-void lcd_progress_bar(int row, int var, int minVal, int maxVal) {
-	int block = map(var, minVal, maxVal, 0, 16);
-	int line = map(var, minVal, maxVal, 0, 80);
+void lcdProgressBar(int row, int var, int minVal, int maxVal) {
+	int block = map(var, minVal, maxVal, 0, displayLenght);
+	int line = map(var, minVal, maxVal, 0, displayLenght * 5);
 	int bar = (line - (block * 5));
 
 	byte bar1[8] = { 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10 };
@@ -38,7 +68,7 @@ void lcd_progress_bar(int row, int var, int minVal, int maxVal) {
 		lcd.write(1022);
 	}
 
-	for (int x = 16; x > block; x--) {
+	for (int x = displayLenght; x > block; x--) {
 		lcd.setCursor(x, row);
 		lcd.write(1022);
 	}

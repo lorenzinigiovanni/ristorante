@@ -32,6 +32,10 @@ namespace Ristorante
                 printerComboBox.SelectedItem = Settings.Default.printerName;
                 printerHeading.Text = Settings.Default.printerHeading;
                 printerFooter.Text = Settings.Default.printerFooter;
+                if (openFile.FileName.Length == 0)
+                {
+                    connectDB.Enabled = false;
+                }
             }
             catch (Exception ex)
             {

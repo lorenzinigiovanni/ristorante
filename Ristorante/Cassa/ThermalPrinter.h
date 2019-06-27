@@ -86,7 +86,7 @@ public:
 	size_t
 		write(uint8_t c);
 	void
-		begin(uint8_t heatTime = 120),
+		begin(uint8_t heatTime = 80),
 		boldOff(),
 		boldOn(),
 		doubleHeightOff(),

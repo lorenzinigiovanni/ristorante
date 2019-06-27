@@ -14,6 +14,7 @@ bool getTime(const char *str) {
 
 
 bool getDate(const char *str) {
+	char *monthName[12] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
 	char Month[12];
 	int Day, Year;
 	uint8_t monthIndex;

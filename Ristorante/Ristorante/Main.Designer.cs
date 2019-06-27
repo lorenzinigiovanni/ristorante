@@ -93,6 +93,9 @@
             this.plateLabel17 = new System.Windows.Forms.Label();
             this.plateLabel18 = new System.Windows.Forms.Label();
             this.plateNumericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.reportPage = new System.Windows.Forms.TabPage();
+            this.printReport1 = new System.Windows.Forms.Button();
+            this.printReport2 = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tab.SuspendLayout();
@@ -117,6 +120,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.plateNumericUpDown3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.plateNumericUpDown2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.plateNumericUpDown1)).BeginInit();
+            this.reportPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // ordersToDoListBox
@@ -464,6 +468,7 @@
             // 
             this.tab.Controls.Add(this.mainPage);
             this.tab.Controls.Add(this.remainingPlatesPage);
+            this.tab.Controls.Add(this.reportPage);
             this.tab.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tab.ItemSize = new System.Drawing.Size(150, 40);
             this.tab.Location = new System.Drawing.Point(0, 0);
@@ -1299,6 +1304,37 @@
             -2147483648});
             this.plateNumericUpDown1.ValueChanged += new System.EventHandler(this.plateNumericUpDown1_ValueChanged);
             // 
+            // reportPage
+            // 
+            this.reportPage.Controls.Add(this.printReport2);
+            this.reportPage.Controls.Add(this.printReport1);
+            this.reportPage.Location = new System.Drawing.Point(4, 44);
+            this.reportPage.Name = "reportPage";
+            this.reportPage.Size = new System.Drawing.Size(1000, 681);
+            this.reportPage.TabIndex = 2;
+            this.reportPage.Text = "Report Page";
+            this.reportPage.UseVisualStyleBackColor = true;
+            // 
+            // printReport1
+            // 
+            this.printReport1.Location = new System.Drawing.Point(25, 25);
+            this.printReport1.Name = "printReport1";
+            this.printReport1.Size = new System.Drawing.Size(300, 40);
+            this.printReport1.TabIndex = 0;
+            this.printReport1.Text = "Print Quantity Report ";
+            this.printReport1.UseVisualStyleBackColor = true;
+            this.printReport1.Click += new System.EventHandler(this.printReport1_Click);
+            // 
+            // printReport2
+            // 
+            this.printReport2.Location = new System.Drawing.Point(25, 71);
+            this.printReport2.Name = "printReport2";
+            this.printReport2.Size = new System.Drawing.Size(300, 40);
+            this.printReport2.TabIndex = 1;
+            this.printReport2.Text = "Print Total Recess Report ";
+            this.printReport2.UseVisualStyleBackColor = true;
+            this.printReport2.Click += new System.EventHandler(this.printReport2_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1340,6 +1376,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.plateNumericUpDown3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.plateNumericUpDown2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.plateNumericUpDown1)).EndInit();
+            this.reportPage.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1410,6 +1447,9 @@
         private System.Windows.Forms.NumericUpDown plateNumericUpDown3;
         private System.Windows.Forms.NumericUpDown plateNumericUpDown2;
         private System.Windows.Forms.NumericUpDown plateNumericUpDown1;
+        private System.Windows.Forms.TabPage reportPage;
+        private System.Windows.Forms.Button printReport1;
+        private System.Windows.Forms.Button printReport2;
     }
 }
 

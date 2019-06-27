@@ -63,25 +63,24 @@ namespace Ristorante
             {
                 var networkStream = tcpClient.GetStream();
                 var reader = new StreamReader(networkStream);
-                var writer = new StreamWriter(networkStream) {AutoFlush = true};
+                var writer = new StreamWriter(networkStream) { AutoFlush = true };
 
-                while (true)
+                var request = await reader.ReadLineAsync();
+                if (request != null)
                 {
-                    var request = await reader.ReadLineAsync();
-                    if (request != null)
-                    {
-                        var response = "";
+                    request = request.ToUpperInvariant();
+                    var response = "";
 
-                        if (request.Contains("ORDER"))
-                            response = await AddOrderAsync(request.Remove(0, 5));
-                        else if (request.Contains("INFO"))
-                            response = await GetInfoAsync();
-
-                        await writer.WriteLineAsync(response);
-                    }
+                    if (request.Contains("ORDER"))
+                        response = await AddOrderAsync(request.Remove(0, 5));
+                    else if (request.Contains("INFO"))
+                        response = await GetInfoAsync();
                     else
-                        break;
+                        response = "NOT VALID REQUEST";
+
+                    await writer.WriteLineAsync(response);
                 }
+
                 tcpClient.Close();
             }
             catch (Exception ex)
@@ -123,30 +122,26 @@ namespace Ristorante
                 allInfo.Append(",");
             }
 
-            allInfo.Append(";");
-
             foreach (var item in await _database.GetDisplayDescriptionsAsync())
             {
                 allInfo.Append(item);
                 allInfo.Append(",");
             }
 
-            allInfo.Append("@");
-
             allInfo.Append(Settings.Default.printerHeading);
 
-            allInfo.Append("$");
+            allInfo.Append(",");
 
             allInfo.Append(Settings.Default.printerFooter);
 
-            allInfo.Append("#");
+            allInfo.Append(",");
 
             foreach (var item in await _database.GetPricesAsync())
             {
                 allInfo.Append(item.Replace(',', '.'));
                 allInfo.Append(",");
             }
-            
+
             return allInfo.ToString();
         }
     }

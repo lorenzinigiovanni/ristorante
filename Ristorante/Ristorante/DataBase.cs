@@ -213,12 +213,34 @@ namespace Ristorante
         /// </summary>
         /// <param name="plate">The id of the plate to check for</param>
         /// <returns>Returns the sum of to do plate</returns>
-        public async Task<int> GetOrdersToDoAsync(int plate)
+        public async Task<int> GetOrdersToDoByPlateAsync(int plate)
         {
             try
             {
                 var query = "SELECT ifnull(sum(plate" + plate;
                 query += "), 0) FROM Orders WHERE executed = 0";
+                var command = new SQLiteCommand(query, _dbConnection);
+
+                return Convert.ToInt32(await command.ExecuteScalarAsync());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+                return -1;
+            }
+        }
+
+        /// <summary>
+        /// Get the sum of a type of plate of all orders
+        /// </summary>
+        /// <param name="plate">The id of the plate to check for</param>
+        /// <returns>Returns the sum of all plate</returns>
+        public async Task<int> GetAllOrdersByPlateAsync(int plate)
+        {
+            try
+            {
+                var query = "SELECT ifnull(sum(plate" + plate;
+                query += "), 0) FROM Orders";
                 var command = new SQLiteCommand(query, _dbConnection);
 
                 return Convert.ToInt32(await command.ExecuteScalarAsync());
@@ -239,7 +261,7 @@ namespace Ristorante
             try
             {
                 const string query = "SELECT * FROM Orders";
-                
+
                 var dataSet = new DataSet();
 
                 await Task.Run(() =>
@@ -255,6 +277,26 @@ namespace Ristorante
             {
                 MessageBox.Show(ex.ToString());
                 return null;
+            }
+        }
+
+        /// <summary>
+        /// Get the total number of orders
+        /// </summary>
+        /// <returns>Return the total orders number</returns>
+        public async Task<int> GetTotalOrdersNumberAsync()
+        {
+            try
+            {
+                const string query = "SELECT COUNT(*) FROM Orders";
+                var command = new SQLiteCommand(query, _dbConnection);
+
+                return Convert.ToInt32(await command.ExecuteScalarAsync());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+                return -1;
             }
         }
 

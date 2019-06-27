@@ -12,7 +12,7 @@ namespace Ristorante
     public partial class Main : Form
     {
         private bool _exit;
-        
+
         private readonly int[] _ordersToDo;
         private readonly int[] _remainingPlates;
 
@@ -37,7 +37,7 @@ namespace Ristorante
             KeyPreview = true;
 
             Fullscreen(Settings.Default.fullScreen);
-            
+
             if (Settings.Default.hideCursor)
                 Cursor.Hide();
 
@@ -53,12 +53,8 @@ namespace Ristorante
             for (var i = 0; i < Settings.Default.clientsNumber; i++)
             {
                 clients[i] = new SocketServer(50200 + i, _database);
-            }
-
-            foreach (var client in clients)
-            {
-                client.Run();
-                client.NewData += NewOrder;
+                clients[i].Run();
+                clients[i].NewData += NewOrder;
             }
 
             KeyUp += Main_KeyUp;
@@ -80,7 +76,7 @@ namespace Ristorante
 
             var tasks = new Task<int>[18];
             for (var i = 0; i < 18; i++)
-                tasks[i] = _database.GetOrdersToDoAsync(i);
+                tasks[i] = _database.GetOrdersToDoByPlateAsync(i);
 
             await getRemainingOrders;
             await getPlateDescriptions;
@@ -104,8 +100,11 @@ namespace Ristorante
         {
             try
             {
-                if (_exit) return;
+                if (_exit)
+                    return;
+
                 Cursor.Show();
+
                 if (saveFile.ShowDialog() == DialogResult.OK)
                 {
                     _exit = await SaveAsync(saveFile.FileName);
@@ -117,8 +116,10 @@ namespace Ristorante
                     _exit = reply == DialogResult.Yes;
                     e.Cancel = !_exit;
                 }
+
                 if (Settings.Default.hideCursor)
                     Cursor.Hide();
+
                 if (_exit)
                     Application.Exit();
             }
@@ -162,9 +163,7 @@ namespace Ristorante
                         for (var j = 0; j < dataSet.Tables[0].Columns.Count; j++)
                         {
                             if (j > 0)
-                            {
                                 swOut.Write(";");
-                            }
 
                             var value = dataSet.Tables[0].Rows[i].ItemArray[j].ToString();
                             value = value.Replace(Environment.NewLine, " ");
@@ -175,7 +174,7 @@ namespace Ristorante
 
                     swOut.Close();
                 });
-                
+
                 return true;
             }
             catch (Exception ex)
@@ -212,16 +211,13 @@ namespace Ristorante
                     else
                     {
                         if (value <= _remainingPlates[i])
-                        {
                             result[i] = value;
-                        }
                         else
-                        {
                             result[i] = _remainingPlates[i];
-                        }
+
                         _remainingPlates[i] -= result[i];
                     }
-                    
+
                     response += result[i] + ",";
                 }
 
@@ -235,9 +231,7 @@ namespace Ristorante
                 else
                 {
                     for (var i = 0; i < 18; i++)
-                    {
                         _ordersToDo[i] += result[i];
-                    }
 
                     var orderNumber = await _database.GetLastOrderNumberAsync() + 1;
 
@@ -277,12 +271,10 @@ namespace Ristorante
                     var actualOrder = await _database.GetOrderAsync(order);
 
                     for (var i = 0; i < 18; i++)
-                    {
                         _ordersToDo[i] -= actualOrder[i];
-                    }
 
                     await _database.SetOrderDoAsync(order);
-                    await PrintOrderAsync(order, actualOrder);
+                    await _printer.PrintOrderAsync(order, actualOrder, _printerDescriptions);
 
                     RefreshTiles(actualOrder);
                     RefreshOrdersToDo();
@@ -299,22 +291,62 @@ namespace Ristorante
             }
         }
 
-        /// <summary>
-        /// Print a order
-        /// </summary>
-        /// <param name="order">Order number</param>
-        /// <param name="actualOrder">Number of order plates</param>
-        private async Task PrintOrderAsync(int order, int[] actualOrder)
+        private async void printReport1_Click(object sender, EventArgs e)
         {
-            var str = "";
-
-            for (var i = 0; i < 18; i++)
+            try
             {
-                if (actualOrder[i] > 0)
-                    str += actualOrder[i] + " " + _printerDescriptions[i] + "\n";
-            }
+                var tasks = new Task<int>[18];
+                for (var i = 0; i < 18; i++)
+                    tasks[i] = _database.GetAllOrdersByPlateAsync(i);
 
-            await _printer.PrintAsync("N°" + order, str);
+                await Task.WhenAll(tasks);
+
+                var allOrders = new int[18];
+                for (var i = 0; i < 18; i++)
+                    allOrders[i] = tasks[i].Result;
+
+                var totalOrdersNumber = await _database.GetTotalOrdersNumberAsync();
+
+                await _printer.PrintReport1Async(totalOrdersNumber, allOrders, _printerDescriptions);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private async void printReport2_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var tasks = new Task<int>[18];
+                for (var i = 0; i < 18; i++)
+                    tasks[i] = _database.GetAllOrdersByPlateAsync(i);
+
+                await Task.WhenAll(tasks);
+
+                var allOrders = new int[18];
+                for (var i = 0; i < 18; i++)
+                    allOrders[i] = tasks[i].Result;
+
+                var platePrices = await _database.GetPricesAsync();
+
+                var totalRecess = 0.0;
+                var recess = new double[18];
+                for (var i = 0; i < 18; i++)
+                {
+                    recess[i] = allOrders[i] * Convert.ToDouble(platePrices[i]);
+                    totalRecess += recess[i];
+                }
+
+                var totalOrdersNumber = await _database.GetTotalOrdersNumberAsync();
+
+                await _printer.PrintReport2Async(totalOrdersNumber, totalRecess, recess, _printerDescriptions);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
         }
 
         /// <summary>
@@ -443,7 +475,7 @@ namespace Ristorante
             plateLabel17.Text = _plateDescriptions[16];
             plateLabel18.Text = _plateDescriptions[17];
         }
-        
+
         /// <summary>
         /// Set the remaining plates array reading the numeric up down
         /// </summary>
@@ -490,19 +522,15 @@ namespace Ristorante
         private async void Main_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
-            {
                 await SelectOrderAsync();
-            }
-            else
-            {
-                if ((e.KeyCode >= Keys.D0) && (e.KeyCode <= Keys.D9))
-                    _keypressed += Convert.ToChar(e.KeyCode);
-            }
+            else if ((e.KeyCode >= Keys.D0) && (e.KeyCode <= Keys.D9))
+                _keypressed += Convert.ToChar(e.KeyCode);
         }
 
         private void Main_Resize(object sender, EventArgs e)
         {
-            if (ClientSize.Height == 0) return;
+            if (ClientSize.Height == 0)
+                return;
 
             var font = new Font("Microsoft Sans Serif", Convert.ToInt32(ClientSize.Height / 40));
             orderNumberLabel.Font = font;
