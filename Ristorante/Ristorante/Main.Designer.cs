@@ -94,8 +94,8 @@
             this.plateLabel18 = new System.Windows.Forms.Label();
             this.plateNumericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.reportPage = new System.Windows.Forms.TabPage();
-            this.printReport1 = new System.Windows.Forms.Button();
             this.printReport2 = new System.Windows.Forms.Button();
+            this.printReport1 = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tab.SuspendLayout();
@@ -1315,16 +1315,6 @@
             this.reportPage.Text = "Report Page";
             this.reportPage.UseVisualStyleBackColor = true;
             // 
-            // printReport1
-            // 
-            this.printReport1.Location = new System.Drawing.Point(25, 25);
-            this.printReport1.Name = "printReport1";
-            this.printReport1.Size = new System.Drawing.Size(300, 40);
-            this.printReport1.TabIndex = 0;
-            this.printReport1.Text = "Print Quantity Report ";
-            this.printReport1.UseVisualStyleBackColor = true;
-            this.printReport1.Click += new System.EventHandler(this.printReport1_Click);
-            // 
             // printReport2
             // 
             this.printReport2.Location = new System.Drawing.Point(25, 71);
@@ -1334,6 +1324,16 @@
             this.printReport2.Text = "Print Total Recess Report ";
             this.printReport2.UseVisualStyleBackColor = true;
             this.printReport2.Click += new System.EventHandler(this.printReport2_Click);
+            // 
+            // printReport1
+            // 
+            this.printReport1.Location = new System.Drawing.Point(25, 25);
+            this.printReport1.Name = "printReport1";
+            this.printReport1.Size = new System.Drawing.Size(300, 40);
+            this.printReport1.TabIndex = 0;
+            this.printReport1.Text = "Print Quantity Report ";
+            this.printReport1.UseVisualStyleBackColor = true;
+            this.printReport1.Click += new System.EventHandler(this.printReport1_Click);
             // 
             // Main
             // 
