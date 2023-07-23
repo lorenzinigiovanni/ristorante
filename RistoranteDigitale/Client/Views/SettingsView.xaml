@@ -1,0 +1,190 @@
+﻿<UserControl x:Class="RistoranteDigitaleClient.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:RistoranteDigitaleClient.Views"
+             xmlns:viewModels="clr-namespace:RistoranteDigitaleClient.ViewModels"
+             xmlns:properties="clr-namespace:RistoranteDigitaleClient.Properties"
+             xmlns:printing="clr-namespace:System.Drawing.Printing;assembly=System.Drawing"
+             xmlns:clr="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.DataContext>
+        <viewModels:SettingsViewModel />
+    </UserControl.DataContext>
+
+    <Grid Margin="10">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0">
+
+            <Grid>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="160px" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="5" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Margin="0,0,10,0" Grid.Row="0" Grid.Column="0">URL Server:</TextBlock>
+                <TextBox Width="Auto" Grid.Row="0" Grid.Column="1" Text="{Binding Source={x:Static properties:Settings.Default}, Path=server_url}" />
+
+                <TextBlock Margin="0,0,10,0" Grid.Row="2" Grid.Column="0">Modalità:</TextBlock>
+                <ComboBox Grid.Row="2" Grid.Column="1" Name="modeCombo" SelectedIndex="{Binding Source={x:Static properties:Settings.Default}, Path=mode}">
+                    <ComboBoxItem Content="Cassa" />
+                    <ComboBoxItem Content="Cucina" />
+                </ComboBox>
+
+            </Grid>
+
+            <Separator Opacity="0" Height="10"/>
+
+            <Grid>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="160px" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="5" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="5" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="5" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="5" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Margin="0,0,10,0" Grid.Row="0" Grid.Column="0">Stampante:</TextBlock>
+                <!--<ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{x:Static Printing:PrinterSettings.InstalledPrinters}" SelectedItem="{Binding Source={x:Static properties:Settings.Default}, Path=printer}"/>-->
+
+                <ComboBox Grid.Row="0" Grid.Column="1" SelectedItem="{Binding Source={x:Static properties:Settings.Default}, Path=printer}">
+                    <ComboBox.ItemsSource>
+                        <CompositeCollection>
+                            <x:Static Member="clr:String.Empty" />
+                            <CollectionContainer Collection="{x:Static printing:PrinterSettings.InstalledPrinters}" />
+                        </CompositeCollection>
+                    </ComboBox.ItemsSource>
+                </ComboBox>
+
+                <TextBlock Margin="0,0,10,0" Grid.Row="2" Grid.Column="0">Logo:</TextBlock>
+                <DockPanel Grid.Row="2" Grid.Column="1">
+                    <Button Margin="5,0,0,0" DockPanel.Dock="Right" Width="20" Click="LogoButton_Click">...</Button>
+                    <TextBox Text="{Binding Source={x:Static properties:Settings.Default}, Path=logo}" />
+                </DockPanel>
+
+                <TextBlock Margin="0,0,10,0" Grid.Row="4" Grid.Column="0">Header:</TextBlock>
+                <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Source={x:Static properties:Settings.Default}, Path=header}" />
+
+                <TextBlock Margin="0,0,10,0" Grid.Row="6" Grid.Column="0">Footer:</TextBlock>
+                <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding Source={x:Static properties:Settings.Default}, Path=footer}" />
+
+                <TextBlock Margin="0,0,10,0" Grid.Row="8" Grid.Column="0">Sponsor:</TextBlock>
+                <DockPanel Grid.Row="8" Grid.Column="1">
+                    <Button Margin="5,0,0,0" DockPanel.Dock="Right" Width="20" Click="SponsorButton_Click">...</Button>
+                    <TextBox Text="{Binding Source={x:Static properties:Settings.Default}, Path=sponsor}" />
+                </DockPanel>
+
+            </Grid>
+
+            <Separator Opacity="0" Height="10"/>
+
+            <StackPanel>
+
+                <StackPanel.Style>
+                    <Style>
+                        <Setter Property="Label.Visibility" Value="Collapsed"></Setter>
+                        <Style.Triggers>
+                            <DataTrigger  
+                        Binding="{Binding ElementName=modeCombo, Path=SelectedItem.Content}" Value="Cassa">
+                                <Setter Property="Label.Visibility" Value="Visible"></Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
+
+                <Grid>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="160px" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="5" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Margin="0,0,10,0" Grid.Row="0" Grid.Column="0">Operatore:</TextBlock>
+                    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Source={x:Static properties:Settings.Default}, Path=operatorName}" />
+
+                    <TextBlock Margin="0,0,10,0" Grid.Row="2" Grid.Column="0">Cassa numero:</TextBlock>
+                    <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Source={x:Static properties:Settings.Default}, Path=cashNumber}" />
+
+                </Grid>
+
+                <Separator Opacity="0" Height="10"/>
+
+            </StackPanel>
+
+            <Grid Visibility="{Binding Source={x:Static properties:Settings.Default}, Path=mode}">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="160px" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="5" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Margin="0,0,10,0" Grid.Row="0" Grid.Column="0">Reset contatore:</TextBlock>
+                <Button Grid.Row="0" Grid.Column="1" Command="{Binding ResetOrdersIndexCommand}">Reset contatore</Button>
+
+                <TextBlock Margin="0,0,10,0" Grid.Row="2" Grid.Column="0">Reset ordini:</TextBlock>
+                <Button Grid.Row="2" Grid.Column="1" Command="{Binding ResetOrdersCommand}">Reset ordini</Button>
+
+            </Grid>
+
+        </StackPanel>
+
+        <Grid Grid.Row="1">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Button Grid.Row="1" Grid.Column="0" Margin="0,0,5,0" Name="Cancel" Click="Cancel_Click">Annulla</Button>
+            <Button Grid.Row="1" Grid.Column="1" Margin="5,0,0,0" Name="Save" Click="Save_Click">Salva</Button>
+
+        </Grid>
+
+    </Grid>
+</UserControl>

@@ -1,0 +1,33 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="RistoranteDigitaleClient.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="server_url" Type="(Web Service URL)" Scope="User">
+      <Value Profile="(Default)">http://localhost:3000</Value>
+    </Setting>
+    <Setting Name="mode" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="printer" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="logo" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="header" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Circolo Ricreativo Saccone</Value>
+    </Setting>
+    <Setting Name="footer" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Buon appetito!</Value>
+    </Setting>
+    <Setting Name="sponsor" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="operatorName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Giovanni</Value>
+    </Setting>
+    <Setting Name="cashNumber" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

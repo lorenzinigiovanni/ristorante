@@ -1,0 +1,57 @@
+﻿<Window x:Class="RistoranteDigitaleClient.Views.ChangeView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:local="clr-namespace:RistoranteDigitaleClient.Views"
+    xmlns:viewModels="clr-namespace:RistoranteDigitaleClient.ViewModels" 
+    mc:Ignorable="d" 
+    Title="Calcolo resto" Height="350" Width="450"
+    FontSize="20"
+    WindowStartupLocation="CenterScreen"
+    FocusManager.FocusedElement="{Binding ElementName=CashTextBox}">
+
+    <Grid Margin="20">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0">
+
+            <TextBlock Margin="0,0,10,0">Contanti:</TextBlock>
+            <TextBox x:Name="CashTextBox" Text="{Binding Cash, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" />
+
+            <Separator Opacity="0" Height="10"/>
+
+            <TextBlock Margin="0,0,10,0">Totale:</TextBlock>
+            <TextBlock Text="{Binding Total, StringFormat=C}" />
+
+            <Separator Opacity="0" Height="10"/>
+
+            <TextBlock Margin="0,0,10,0">Resto:</TextBlock>
+            <TextBlock Text="{Binding Change, StringFormat=C}" />
+
+        </StackPanel>
+
+        <Grid Grid.Row="2">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" Margin="0,0,5,0" Content="Annulla" Click="Cancel_Click" IsCancel="True"></Button>
+            <Button Grid.Column="1" Margin="5,0,0,0" Content="Conferma" Click="Send_Click" IsDefault="True"></Button>
+
+        </Grid>
+
+    </Grid>
+
+</Window>
