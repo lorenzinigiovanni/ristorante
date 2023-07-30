@@ -60,6 +60,8 @@ namespace RistoranteDigitaleServer.Controllers
                     Id = order.Id,
                     Index = order.Index,
                     CreatedAt = order.CreatedAt,
+                    PendingAt = order.PendingAt,
+                    CompletedAt = order.CompletedAt,
                     Status = order.Status,
                     ItemCounts = itemCounts,
                 };
