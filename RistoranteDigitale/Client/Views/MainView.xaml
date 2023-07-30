@@ -28,8 +28,9 @@
             <TabItem Header="Piatti">
                 <views:FoodView />
             </TabItem>
-            <!--<TabItem Header="Statistiche">
-            </TabItem>-->
+            <TabItem Header="Statistiche">
+                <views:StatisticsView />
+            </TabItem>
             <TabItem Header="Impostazioni">
                 <views:SettingsView />
             </TabItem>

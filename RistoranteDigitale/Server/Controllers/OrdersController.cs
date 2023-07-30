@@ -219,23 +219,28 @@ namespace RistoranteDigitaleServer.Controllers
 
         // GET: api/Orders/Items
         [HttpGet("Items")]
-        public async Task<ActionResult<IEnumerable<ItemCount>>> GetOrdersItems([FromQuery] OrderStatus? status, [FromQuery] ItemType? type)
+        public async Task<ActionResult<IEnumerable<ItemCount>>> GetOrdersItems([FromQuery] OrderStatus? status, [FromQuery] ItemType? type, [FromQuery] string? fromDate, [FromQuery] string? toDate)
         {
             if (context.Orders == null)
             {
                 return NotFound();
             }
 
-            return await GetOrdersItemsFunc(status, type);
+            DateTime? fromDateTime = fromDate == null ? null : DateTime.Parse(fromDate).ToUniversalTime();
+            DateTime? toDateTime = toDate == null ? null : DateTime.Parse(toDate).ToUniversalTime();
+
+            return await GetOrdersItemsFunc(status, type, fromDateTime, toDateTime);
         }
 
-        private async Task<List<ItemCount>> GetOrdersItemsFunc(OrderStatus? status, ItemType? type)
+        private async Task<List<ItemCount>> GetOrdersItemsFunc(OrderStatus? status, ItemType? type, DateTime? fromDate = null, DateTime? toDate = null)
         {
             var items = await context.Items
                .Where(i => type == null || i.Type == type)
                .Join(context.OrderItem, i => i.Id, oi => oi.ItemId, (i, oi) => new { Item = i, OrderItem = oi })
                .Join(context.Orders, i => i.OrderItem.OrderId, o => o.Id, (i, o) => new { Item = i.Item, OrderItem = i.OrderItem, Order = o })
                .Where(i => status == null || i.Order.Status == status)
+               .Where(i => fromDate == null || i.Order.CreatedAt >= fromDate)
+               .Where(i => toDate == null || i.Order.CreatedAt <= toDate)
                .OrderBy(i => i.Item.Index)
                .ToListAsync();
 
@@ -260,17 +265,22 @@ namespace RistoranteDigitaleServer.Controllers
 
         // GET: api/Orders/Count
         [HttpGet("Count")]
-        public async Task<ActionResult<long>> GetOrdersCount([FromQuery] OrderStatus? status, [FromQuery] ItemType? type)
+        public async Task<ActionResult<long>> GetOrdersCount([FromQuery] OrderStatus? status, [FromQuery] ItemType? type, [FromQuery] string? fromDate, [FromQuery] string? toDate)
         {
             if (context.Orders == null)
             {
                 return NotFound();
             }
 
+            DateTime? fromDateTime = fromDate == null ? null : DateTime.Parse(fromDate).ToUniversalTime();
+            DateTime? toDateTime = toDate == null ? null : DateTime.Parse(toDate).ToUniversalTime();
+
             var orders = await context.Orders
                 .Include(o => o.Items)
                 .Where(o => status == null || o.Status == status)
                 .Where(o => type == null || o.Items.Any(i => i.Type == type))
+                .Where(o => fromDate == null || o.CreatedAt >= fromDateTime)
+                .Where(o => toDate == null || o.CreatedAt <= toDateTime)
                 .ToListAsync();
 
             return orders.Count;
