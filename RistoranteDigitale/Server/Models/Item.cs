@@ -18,6 +18,7 @@ namespace RistoranteDigitaleServer.Models
         public decimal Price { get; set; }
         public long Availability { get; set; }
         public ItemType Type { get; set; }
+        public long PrintGroup { get; set; }
         [JsonIgnore]
         public List<Order> Orders { get; } = new();
         [JsonIgnore]

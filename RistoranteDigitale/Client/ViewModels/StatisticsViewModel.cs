@@ -110,4 +110,3 @@ namespace RistoranteDigitaleClient.ViewModels
         }
     }
 }
- 

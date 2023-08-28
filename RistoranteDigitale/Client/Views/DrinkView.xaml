@@ -26,6 +26,7 @@
                     <DataGridTextColumn Header="Nome" Binding="{Binding Name}" Width="3*" />
                     <DataGridTextColumn Header="Prezzo" Binding="{Binding Price, StringFormat=C}" Width="*" />
                     <DataGridTextColumn Header="Disponibilità" Binding="{Binding Availability}" Width="*" />
+                    <DataGridTextColumn Header="Gruppo stampa" Binding="{Binding PrintGroup}" Width="*" />
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>

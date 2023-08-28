@@ -63,6 +63,7 @@ namespace RistoranteDigitaleServer.Controllers
                     PendingAt = order.PendingAt,
                     CompletedAt = order.CompletedAt,
                     Status = order.Status,
+                    Operator = order.Operator,
                     ItemCounts = itemCounts,
                 };
 
@@ -205,7 +206,10 @@ namespace RistoranteDigitaleServer.Controllers
                 Id = order.Id,
                 Index = order.Index,
                 CreatedAt = order.CreatedAt,
+                PendingAt = order.PendingAt,
+                CompletedAt = order.CompletedAt,
                 Status = order.Status,
+                Operator = order.Operator,
                 ItemCounts = itemCounts,
             };
 

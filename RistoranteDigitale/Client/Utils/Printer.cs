@@ -37,24 +37,42 @@ namespace RistoranteDigitaleClient.Utils
 
                 if (isFood)
                 {
-                    var orderFood = new Order
+                    var printGroups = order.ItemCounts
+                        .Where(ic => ic.Item.Type == ItemType.Food)
+                        .Select(ic => ic.Item.PrintGroup)
+                        .Distinct()
+                        .ToList();
+
+                    foreach (var printGroup in printGroups)
                     {
-                        Id = order.Id,
-                        Index = order.Index,
-                        ItemCounts = order.ItemCounts.Where(ic => ic.Item.Type == ItemType.Food).ToList(),
-                    };
-                    await PrintOrderAsync(receiptType, orderFood);
+                        var orderFood = new Order
+                        {
+                            Id = order.Id,
+                            Index = order.Index,
+                            ItemCounts = order.ItemCounts.Where(ic => ic.Item.Type == ItemType.Food && ic.Item.PrintGroup == printGroup).ToList(),
+                        };
+                        await PrintOrderAsync(receiptType, orderFood);
+                    }
                 }
 
                 if (isDrink)
                 {
-                    var orderDrink = new Order
+                    var printGroups = order.ItemCounts
+                        .Where(ic => ic.Item.Type == ItemType.Drink)
+                        .Select(ic => ic.Item.PrintGroup)
+                        .Distinct()
+                        .ToList();
+
+                    foreach (var printGroup in printGroups)
                     {
-                        Id = order.Id,
-                        Index = order.Index,
-                        ItemCounts = order.ItemCounts.Where(ic => ic.Item.Type == ItemType.Drink).ToList(),
-                    };
-                    await PrintOrderAsync(receiptType, orderDrink);
+                        var orderDrink = new Order
+                        {
+                            Id = order.Id,
+                            Index = order.Index,
+                            ItemCounts = order.ItemCounts.Where(ic => ic.Item.Type == ItemType.Drink).ToList(),
+                        };
+                        await PrintOrderAsync(receiptType, orderDrink);
+                    }
                 }
             }
         }
@@ -90,7 +108,7 @@ namespace RistoranteDigitaleClient.Utils
                 }
 
                 // If there is food in the order, print the order number
-                if (isFood)
+                if (Settings.Default.orderNumber && isFood)
                 {
                     printer.Append(FontSize(4, 4));
                     printer.Append($"#{order.Index}");
@@ -153,7 +171,7 @@ namespace RistoranteDigitaleClient.Utils
                 printer.AlignCenter();
 
                 // Print the qrcode
-                if (isFood)
+                if (Settings.Default.qrCode && isFood)
                 {
                     printer.NewLines(2);
                     if (receiptType == ReceiptType.CashRegister)

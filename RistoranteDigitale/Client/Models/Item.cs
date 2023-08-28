@@ -12,8 +12,9 @@ namespace RistoranteDigitaleClient.Models
     public class Item : ObservableObject
     {
         private Guid id;
-        
-        public Guid Id {
+
+        public Guid Id
+        {
             get { return id; }
             set
             {
@@ -22,7 +23,8 @@ namespace RistoranteDigitaleClient.Models
         }
 
         private long index;
-        public long Index {
+        public long Index
+        {
             get { return index; }
             set
             {
@@ -67,6 +69,16 @@ namespace RistoranteDigitaleClient.Models
             set
             {
                 SetProperty(ref type, value);
+            }
+        }
+
+        private long printGroup;
+        public long PrintGroup
+        {
+            get { return printGroup; }
+            set
+            {
+                SetProperty(ref printGroup, value);
             }
         }
     }

@@ -131,5 +131,29 @@ namespace RistoranteDigitaleClient.Properties {
                 this["cashNumber"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool qrCode {
+            get {
+                return ((bool)(this["qrCode"]));
+            }
+            set {
+                this["qrCode"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool orderNumber {
+            get {
+                return ((bool)(this["orderNumber"]));
+            }
+            set {
+                this["orderNumber"] = value;
+            }
+        }
     }
 }
