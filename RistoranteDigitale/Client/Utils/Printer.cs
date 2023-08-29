@@ -221,7 +221,16 @@ namespace RistoranteDigitaleClient.Utils
         /// <returns>Padded strings</returns>
         static string AlignLeftRight(string left, string right, int lineWidth)
         {
-            return left + new string(' ', lineWidth - left.Length - right.Length) + right;
+            var count = lineWidth - left.Length - right.Length;
+            if (count <= 0)
+            {
+                left = left.Substring(0, lineWidth - right.Length - 1);
+                return left + ' ' + right;
+            }
+            else
+            {
+                return left + new string(' ', count) + right;
+            }
         }
 
         /// <summary>
