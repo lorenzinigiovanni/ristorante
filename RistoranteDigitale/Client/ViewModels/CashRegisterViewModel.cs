@@ -179,7 +179,8 @@ namespace RistoranteDigitaleClient.ViewModels
 
             try
             {
-                var x = JsonSerializer.Serialize(sendItems);
+                var toSend = new { items = sendItems, operatorName = Settings.Default.operatorName };
+                var x = JsonSerializer.Serialize(toSend);
                 var content = new StringContent(x, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await HttpClientManager.Client.PostAsync($"{Settings.Default.server_url}/api/Orders", content);
 

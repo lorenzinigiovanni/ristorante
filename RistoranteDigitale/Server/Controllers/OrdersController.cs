@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Any;
 using RistoranteDigitaleServer.Hubs;
 using RistoranteDigitaleServer.Models;
 using RistoranteDigitaleServer.Services;
@@ -148,9 +149,15 @@ namespace RistoranteDigitaleServer.Controllers
             return NoContent();
         }
 
+        public class OrderPostBody
+        {
+            public string operatorName { get; set; }
+            public List<ItemCount> items { get; set; }
+        }
+
         // POST: api/Orders
         [HttpPost]
-        public async Task<ActionResult<Order>> PostOrder(JsonElement json)
+        public async Task<ActionResult<Order>> PostOrder(OrderPostBody body)
         {
             if (context.Orders == null)
             {
@@ -167,13 +174,9 @@ namespace RistoranteDigitaleServer.Controllers
 
             await context.Orders.AddAsync(order);
 
-            var itemCounts = JsonSerializer.Deserialize<List<ItemCount>>(json);
+            order.Operator = body.operatorName;
 
-            if (itemCounts == null)
-            {
-                return BadRequest();
-            }
-
+            var itemCounts = body.items as List<ItemCount>;
             foreach (var itemCount in itemCounts)
             {
                 var orderItem = new OrderItem

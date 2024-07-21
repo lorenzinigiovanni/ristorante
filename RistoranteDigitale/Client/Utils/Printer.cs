@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using ESC_POS_USB_NET.Enums;
 using RistoranteDigitaleClient.Models;
 using RistoranteDigitaleClient.Properties;
@@ -84,6 +85,8 @@ namespace RistoranteDigitaleClient.Utils
                 var isFood = order.ItemCounts.Any(ic => ic.Item.Type == ItemType.Food);
                 var isDrink = order.ItemCounts.Any(ic => ic.Item.Type == ItemType.Drink);
 
+                // MAIN RECEIPT
+
                 var printer = new ESC_POS_Printer.Printer(Settings.Default.printer, "IBM00858");
 
                 printer.AlignCenter();
@@ -107,8 +110,8 @@ namespace RistoranteDigitaleClient.Utils
                     printer.NewLines(2);
                 }
 
-                // If there is food in the order, print the order number
-                if (Settings.Default.orderNumber && isFood)
+                // If there the order number is requested, print it
+                if (Settings.Default.orderNumber == "Both" || (Settings.Default.orderNumber == "Food" && isFood) || (Settings.Default.orderNumber == "Drink" && isDrink))
                 {
                     printer.Append(FontSize(4, 4));
                     printer.Append($"#{order.Index}");
@@ -170,8 +173,9 @@ namespace RistoranteDigitaleClient.Utils
 
                 printer.AlignCenter();
 
-                // Print the qrcode
-                if (Settings.Default.qrCode && isFood)
+                // Print the qrcode if requested
+                if ((Settings.Default.qrCode == "Receipt" || Settings.Default.qrCode == "Both")
+                    && (Settings.Default.orderNumber == "Both" || (Settings.Default.orderNumber == "Food" && isFood) || (Settings.Default.orderNumber == "Drink" && isDrink)))
                 {
                     printer.NewLines(2);
                     if (receiptType == ReceiptType.CashRegister)
@@ -209,6 +213,30 @@ namespace RistoranteDigitaleClient.Utils
                 printer.NewLines(2);
                 printer.FullPaperCut();
                 printer.PrintDocument();
+
+                // ONLY QR CODE IN SEPARATE RECEIPT
+
+                // Print the qrcode if requested
+                if ((Settings.Default.qrCode == "Separate" || Settings.Default.qrCode == "Both")
+                    && (Settings.Default.orderNumber == "Both" || (Settings.Default.orderNumber == "Food" && isFood) || (Settings.Default.orderNumber == "Drink" && isDrink)))
+                {
+
+                    printer = new ESC_POS_Printer.Printer(Settings.Default.printer, "IBM00858");
+                    printer.AlignCenter();
+                    printer.NewLines(2);
+                    if (receiptType == ReceiptType.CashRegister)
+                    {
+                        printer.QrCode("cr-" + order.Id.ToString(), (QrCodeSize)3);
+                    }
+                    else if (receiptType == ReceiptType.Kitchen)
+                    {
+                        printer.QrCode("kc-" + order.Id.ToString(), (QrCodeSize)3);
+                    }
+
+                    printer.NewLines(6);
+                    printer.FullPaperCut();
+                    printer.PrintDocument();
+                }
             });
         }
 

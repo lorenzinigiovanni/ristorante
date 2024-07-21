@@ -12,7 +12,7 @@ namespace RistoranteDigitaleClient.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.6.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.9.0.0")]
     public sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -134,25 +134,25 @@ namespace RistoranteDigitaleClient.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool qrCode {
+        [global::System.Configuration.DefaultSettingValueAttribute("Food")]
+        public string orderNumber {
             get {
-                return ((bool)(this["qrCode"]));
+                return ((string)(this["orderNumber"]));
             }
             set {
-                this["qrCode"] = value;
+                this["orderNumber"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool orderNumber {
+        [global::System.Configuration.DefaultSettingValueAttribute("Receipt")]
+        public string qrCode {
             get {
-                return ((bool)(this["orderNumber"]));
+                return ((string)(this["qrCode"]));
             }
             set {
-                this["orderNumber"] = value;
+                this["qrCode"] = value;
             }
         }
     }

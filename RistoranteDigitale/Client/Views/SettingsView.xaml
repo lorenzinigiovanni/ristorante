@@ -99,10 +99,20 @@
                 <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Source={x:Static properties:Settings.Default}, Path=header}" />
 
                 <TextBlock Margin="0,0,10,0" Grid.Row="6" Grid.Column="0">Numero ordine:</TextBlock>
-                <CheckBox Grid.Row="6" Grid.Column="1" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=orderNumber}" VerticalAlignment="Center" />
+                <ComboBox Grid.Row="6" Grid.Column="1" SelectedValue="{Binding Source={x:Static properties:Settings.Default}, Path=orderNumber}" SelectedValuePath="Content">
+                    <ComboBoxItem Content="No" />
+                    <ComboBoxItem Content="Food" />
+                    <ComboBoxItem Content="Drink" />
+                    <ComboBoxItem Content="Both" />
+                </ComboBox>
 
                 <TextBlock Margin="0,0,10,0" Grid.Row="8" Grid.Column="0">QR code:</TextBlock>
-                <CheckBox Grid.Row="8" Grid.Column="1" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=qrCode}" VerticalAlignment="Center" />
+                <ComboBox Grid.Row="8" Grid.Column="1" SelectedValue="{Binding Source={x:Static properties:Settings.Default}, Path=qrCode}" SelectedValuePath="Content">
+                    <ComboBoxItem Content="No" />
+                    <ComboBoxItem Content="Receipt" />
+                    <ComboBoxItem Content="Separate" />
+                    <ComboBoxItem Content="Both" />
+                </ComboBox>
 
                 <TextBlock Margin="0,0,10,0" Grid.Row="10" Grid.Column="0">Footer:</TextBlock>
                 <TextBox Grid.Row="10" Grid.Column="1" Text="{Binding Source={x:Static properties:Settings.Default}, Path=footer}" />
